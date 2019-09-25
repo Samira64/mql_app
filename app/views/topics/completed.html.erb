@@ -1,0 +1,19 @@
+<h1>Finished threads</h1>
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>URL</th>
+        <th>Date</th>
+        <th>Is_approved</th>
+    </tr>
+
+    <% @topics.each do |t| %>
+        <tr>
+            <td><a href="/topics/<%= t.id %>"><%= t.title %></a></td>
+            <td><a target="_blank" href="//<%= t.url %>"> <%= t.url %> </a></td>
+            <td><%= t.created_at.strftime('%d %B %Y') %></td>
+            <td><span class="badge badge-info"><%= t.is_approved ? 'Yes' : 'No' %><span></td>
+        </tr>
+    <% end %>
+</table>
+ <%= link_to "Back to unfinished threads", root_path, class: "btn btn-success mr-2" %>

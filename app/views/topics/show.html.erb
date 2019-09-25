@@ -1,0 +1,30 @@
+<% flash.each do |key, value| %>
+    <%= content_tag :div, value, class: "flash #{key} alert-#{key} p-2" %>
+<% end %>
+
+ <h1><%= @topic.title %></h1>
+ <p>Date of creation:<%= @topic.created_at.strftime('%d %B %Y') %></p>
+ <p class="badge badge-info"><%= @topic.is_approved ? 'Topic is approved.' : 'Topic is not approved.' %><p>
+ <p class="badge badge-info"><%= @topic.is_completed ? 'Topic is completed.' : 'Topic is not completed.' %><p>
+ <hr>
+ 
+<% title = @topic.is_approved? ? 'Disapprove' : 'Approve' %>
+ <div class="d-flex flex-row-reverse">
+    <% if !@topic.is_completed? && params.has_key?(:admin) %>
+        <%= form_for(@topic, url: topics_approve_path, method: :post) do |f| %>
+            <%= f.submit title, class: "btn btn-success ml-2" %>
+        <% end %>
+    <% end %>
+
+    <%= form_for(@topic, url: topics_finish_path, method: :post) do |f| %>
+        <% if !@topic.is_completed? %>
+            <%= f.submit "Finish", class: "btn btn-success" %>
+        <% elsif params.has_key?(:admin) %>
+            <%= f.submit "Unfinish", class: "btn btn-success" %>
+        <% end %>
+    <% end %>
+
+<% finish_title = @topic.is_completed? ? 'Back to finished threads' : 'Back to unfinished threads' %>
+<% proper_path = @topic.is_completed? ? topics_finished_path : root_path %>
+    <%= link_to finish_title, proper_path, class: "btn btn-success mr-2" %>
+</div>
